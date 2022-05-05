@@ -1,38 +1,37 @@
-import { Box, Grid, GridItem, Heading, Spacer } from "@chakra-ui/react";
-import { useState } from "react";
-import { useLocation } from "react-router-dom";
+import { Box, Button, Grid, GridItem, Heading, Spacer } from "@chakra-ui/react";
+import { elementDragControls } from "framer-motion/types/gestures/drag/VisualElementDragControls";
+import { useEffect, useState } from "react";
+import { unstable_HistoryRouter, useLocation } from "react-router-dom";
+import { usePosts } from "../hooks/usePosts";
+import { useThreads } from "../hooks/useThreads";
+import { ModModal } from "./ModModal";
 import { Post } from "./Post";
-
-type post_definition = {
-  date: string;
-  comment: string;
-  postby: string;
-};
-
-interface PostContents {
-  posts: post_definition[];
-}
 
 export const Posts = () => {
   const location = useLocation();
 
-  let { posts } = location.state as PostContents;
+  const { threadArray, setThreadArray } = useThreads();
 
-  console.log(posts.length);
-  console.log(posts);
+  const [selID, setSelID] = useState<{ post_id: string }>(
+    location.state as { post_id: string }
+  );
+
+  console.log("**************88");
+  console.log(threadArray);
+  console.log("**************88");
+
+  const targetThread = threadArray.filter((elem) => {
+    return elem.thread_id === selID.post_id;
+  });
 
   return (
     <>
-      <Heading> 再生資源回収の件 </Heading>
-      {posts.map((component, index) => (
-        // <Box m={30} h={400} w={800} key={index}>
-        <Post
-          date={component.date}
-          comment={component.comment}
-          postby={component.postby}
-        />
-        // </Box>;
+      {targetThread[0].posts.map((elem, index) => (
+        <p key={index}>{elem.message}</p>
       ))}
+      <Box>
+        <Button> ポストを新たに投稿する </Button>
+      </Box>
     </>
   );
 };

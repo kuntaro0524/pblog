@@ -1,15 +1,33 @@
 import { Button, Flex, Grid, GridItem, VStack } from "@chakra-ui/react";
+import {
+  MouseEventHandler,
+  useState,
+  MouseEvent,
+  ChangeEventHandler,
+  ChangeEvent,
+} from "react";
+import { User } from "../types/postinfo";
+import { ModModal } from "./ModModal";
 
 type post_definition = {
-  date: string;
+  date: Date;
   comment: string;
-  postby: string;
+  creater: User;
 };
 
 export const Post = (props: post_definition) => {
-  let { date, comment, postby } = props;
-  console.log(date);
-  console.log(comment);
+  let { date, comment, creater } = props;
+
+  const [sentense, setSentense] = useState(comment);
+
+  const modSentense = (e: MouseEvent<HTMLButtonElement>) => {
+    console.log(e.target);
+  };
+
+  const onChangeText = (e: ChangeEvent<HTMLInputElement>) => {
+    console.log(e.target.value);
+    setSentense(e.target.value);
+  };
 
   return (
     <>
@@ -29,16 +47,18 @@ export const Post = (props: post_definition) => {
             borderColor={"green"}
             color={"white"}
           >
-            <p> {date} </p>
+            <p> {date.toString()} </p>
           </GridItem>
           <GridItem w="600px" h="50" bg={"lightgreen"} borderRadius={"20px"}>
             <p> {comment} </p>
           </GridItem>
           <GridItem w="200px" h="50" bg={"lightgreen"}>
-            <p> 投稿者:{postby}</p>
+            <p> 投稿者:{creater.name}</p>
           </GridItem>
-          <Button>編集する</Button>
-          <Button>返信する</Button>
+          <Button value={sentense} onClick={modSentense}>
+            返信する
+          </Button>
+          <ModModal comment={sentense} onChangeText={onChangeText} />
         </Flex>
       </Grid>
     </>

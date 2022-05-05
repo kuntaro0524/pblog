@@ -2,6 +2,7 @@ import { Box, FormControl, Heading } from "@chakra-ui/react";
 import { log } from "console";
 import { MouseEventHandler } from "react";
 import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
+import { ThreadInfo } from "../types/postinfo";
 
 type post_definition = {
   date: string;
@@ -10,22 +11,21 @@ type post_definition = {
 };
 
 type Props = {
-  threadInfo: {
-    thread_id: string;
-    thread_title: string;
-    thread_master: string;
-    posts: post_definition[];
-  };
+  threadInfo: ThreadInfo;
 };
 
 export const ThreadCard = (props: Props) => {
   const { threadInfo } = props;
 
+  console.log("TITLETITLE");
+  console.log(threadInfo.thread_title);
+  console.log("TITLETITLE");
+
   const navigate = useNavigate();
 
   const onClickBox = (e: React.MouseEvent<HTMLInputElement>) => {
     console.log(threadInfo.thread_id);
-    navigate("/detail", { state: { posts: threadInfo.posts } });
+    navigate("/detail", { state: { post_id: threadInfo.thread_id } });
   };
 
   return (

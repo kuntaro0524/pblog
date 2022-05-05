@@ -5,19 +5,28 @@ import { Button, ChakraProvider } from "@chakra-ui/react";
 import { InitLayout } from "./components/page/InitLayout";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Posts } from "./components/molecule/Posts";
+import { AllPostProvider } from "./components/provider/PostProvider";
+import {
+  AllThreadContext,
+  AllThreadProvider,
+} from "./components/provider/ThreadProvider";
 
 function App() {
   return (
-    <ChakraProvider>
-      <BrowserRouter>
-        <div className="App">
-          <Routes>
-            <Route path="/" element={<InitLayout />} />
-            <Route path="/detail" element={<Posts />} />
-          </Routes>
-        </div>
-      </BrowserRouter>
-    </ChakraProvider>
+    <AllThreadProvider>
+      <AllPostProvider>
+        <ChakraProvider>
+          <BrowserRouter>
+            <div className="App">
+              <Routes>
+                <Route path="/" element={<InitLayout />} />
+                <Route path="/detail" element={<Posts />} />
+              </Routes>
+            </div>
+          </BrowserRouter>
+        </ChakraProvider>
+      </AllPostProvider>
+    </AllThreadProvider>
   );
 }
 
